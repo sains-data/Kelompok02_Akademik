@@ -1,5 +1,3 @@
-﻿# AKADEMIK-TubesDW-Kelompok02
-
 # Data Mart - Akademik  
 Tugas Besar Pergudangan Data - Kelompok 2
 
@@ -10,58 +8,136 @@ Tugas Besar Pergudangan Data - Kelompok 2
 - Sarah Wasti — 123450057  
 
 ## 📘 Project Description
-Data Mart Akademik ini dirancang untuk mendukung kebutuhan analitik di lingkungan institusi pendidikan.  
-Proyek ini bertujuan menyediakan data terstruktur untuk analisis performa akademik mahasiswa, kinerja mata kuliah, efektivitas dosen, dan pemantauan progres studi secara keseluruhan.
+Data Mart Akademik ini dirancang untuk mendukung analitik akademik secara komprehensif dalam institusi pendidikan.  
+Fokus utama berada pada proses **admission**, **perkuliahan (enrollment)**, dan **kelulusan (graduation)**, sehingga dapat dipakai untuk memantau performa mahasiswa, efektivitas mata kuliah, kualitas pengajaran, serta efisiensi program studi.
 
-Data Mart ini menggunakan pendekatan dimensional modeling sehingga memungkinkan pelaporan cepat, konsisten, dan mudah diadaptasi untuk berbagai kebutuhan analisis akademik.
+Pendekatan **dimensional modeling (Kimball)** digunakan agar proses analisis cepat, konsisten, dan mudah diekspansi.
 
 ## 🏫 Business Domain
-Domain yang diangkat adalah **manajemen akademik**, mencakup:
-- Aktivitas perkuliahan  
-- Penilaian mahasiswa  
-- Data program studi dan mata kuliah  
-- Jadwal akademik  
-- Aktivitas dosen  
-- Presensi mahasiswa & dosen  
+Domain yang diangkat adalah **pengelolaan akademik**, mencakup seluruh lifecycle mahasiswa:
+1. Pendaftaran masuk (Admission)
+2. Aktivitas perkuliahan (Enrollment)
+3. Kelulusan (Graduation)
 
-Data Mart ini akan mendukung unit seperti BAAK, Program Studi, dan pihak universitas dalam melakukan evaluasi kinerja akademik.
+Stakeholder utama:
+- BAAK  
+- Program Studi  
+- Fakultas  
+- Wakil Rektor Akademik  
+- Dosen & Pengajar  
 
 ## 🏗️ Architecture
-- **Approach:** Kimball (Dimensional Modeling / Star Schema)  
-- **Platform:** SQL Server on Azure Virtual Machine  
-- **ETL Tools:** SSIS (SQL Server Integration Services)  
-- **Orchestration:** Stored Procedure + SQL Agent  
-- **BI Layer:** Power BI (untuk dashboard & reporting)
+- **Approach:** Kimball Dimensional Modeling (Star Schema)  
+- **Platform:** SQL Server on Azure VM  
+- **ETL:** SSIS  
+- **Orchestrator:** SQL Agent  
+- **Analytical Layer:** Power BI  
 
 ## ⭐ Key Features
-- **Fact Tables:**  
-  - Fact_KHS  
-  - Fact_Transkrip  
-  - Fact_Presensi  
-  - Fact_KRS  
-  - Fact_Jadwal  
 
-- **Dimension Tables:**  
-  - Dim_Mahasiswa  
-  - Dim_Dosen  
-  - Dim_MataKuliah  
-  - Dim_ProgramStudi  
-  - Dim_Waktu  
+### 🧮 Fact Tables
+1. **Fact_Enrollment**  
+   *Grain: satu baris per mahasiswa per mata kuliah per semester*  
+   - EnrollmentKey (PK)  
+   - DateKey (FK → Dim_Date)  
+   - StudentKey (FK → Dim_Student)  
+   - CourseKey (FK → Dim_Course)  
+   - InstructorKey (FK → Dim_Instructor)  
+   - ProgramKey (FK → Dim_Program)  
+   - SemesterKey (FK → Dim_Semester)  
+   - Grade  
+   - Credits  
+   - AttendanceRate  
+   - TuitionFee  
 
-- **KPIs:**  
-  - Rata-rata IP per semester  
-  - Tingkat kelulusan mata kuliah  
-  - Distribusi nilai per mata kuliah  
-  - Persentase presensi mahasiswa dan dosen  
-  - Retensi dan dropout rate  
+2. **Fact_Admission**  
+   *Grain: satu baris per pendaftar/pendaftaran*  
+   - AdmissionKey (PK)  
+   - DateKey  
+   - StudentKey  
+   - AdmissionType  
+   - AdmissionScore  
+   - AdmissionStatus  
+
+3. **Fact_Graduation**  
+   *Grain: satu baris per mahasiswa yang lulus*  
+   - GraduationKey (PK)  
+   - StudentKey  
+   - DateKey  
+   - TimeToGraduate  
+   - Degree  
+   - HonorsFlag  
+
+---
+
+### 📚 Dimension Tables
+1. **Dim_Date**  
+   - DateKey (PK)  
+   - Date  
+   - Day  
+   - Month  
+   - Quarter  
+   - Year  
+   - SemesterCode  
+
+2. **Dim_Student**  
+   - StudentKey (PK)  
+   - StudentNaturalID (NIM)  
+   - FullName  
+   - DOB  
+   - Gender  
+   - EntryYear  
+   - Status  
+   - ProgramNaturalID  
+
+3. **Dim_Course**  
+   - CourseKey (PK)  
+   - CourseCode  
+   - CourseName  
+   - Credits  
+   - ProgramNaturalID  
+
+4. **Dim_Instructor**  
+   - InstructorKey (PK)  
+   - InstructorNaturalID  
+   - Name  
+   - Rank  
+   - Dept  
+   - FTE  
+
+5. **Dim_Program**  
+   - ProgramKey (PK)  
+   - ProgramCode  
+   - ProgramName  
+   - Faculty  
+
+6. **Dim_Semester**  
+   - SemesterKey (PK)  
+   - SemesterCode  
+   - StartDate  
+   - EndDate  
+
+---
+
+## 📊 KPIs
+- Average Grade per course & semester  
+- Course pass rate  
+- Attendance performance  
+- Time-to-graduate  
+- Admission conversion rate  
+- Graduation rate  
+- Attrition/Dropout rate  
+
+---
 
 ## 📂 Documentation  
-- **Business Requirements:**  
+- **Business Requirements**  
   `/01-business-requirements/`
 
-- **Design Documents:**  
+- **Design Documents**  
   `/02-data-modeling/`  
-  Berisi ERD, star schema, data dictionary, serta definisi fact & dimension.
+
+---
 
 ## ⏳ Timeline
 - **Misi 1:** 10 November 2025  
