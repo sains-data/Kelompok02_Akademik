@@ -29,7 +29,7 @@ Stakeholder utama:
 ## 🏗️ Architecture
 - **Approach:** Kimball Dimensional Modeling (Star Schema)  
 - **Platform:** SQL Server on Azure VM  
-- **ETL:** SSIS  
+- **ETL:** UBUNTU 24 
 - **Orchestrator:** SQL Agent  
 - **Analytical Layer:** Power BI  
 
@@ -148,3 +148,4 @@ Stakeholder utama:
 
 # Data Mart - Akademik  
 Tugas Besar Pergudangan Data - Kelompok 2
+
