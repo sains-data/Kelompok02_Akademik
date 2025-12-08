@@ -1,0 +1,6 @@
+-- 01_Create_Database.sql
+CREATE DATABASE DM_AKADEMIK;
+GO
+
+USE DM_AKADEMIK;
+GO
